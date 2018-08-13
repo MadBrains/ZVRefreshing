@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.subspec 'Core' do |core|
-    core.source_files = "ZVRefreshing/Base/**/*.swift", "ZVRefreshing/State/**/*.swift", "ZVRefreshing/Support/**/*.swift", "ZVRefreshing/ZVRefreshing.h"
+    core.source_files = "ZVRefreshing/Core/**/*.swift", "ZVRefreshing/State/**/*.swift", "ZVRefreshing/Support/**/*.swift", "ZVRefreshing/ZVRefreshing.h"
     core.resources    = "ZVRefreshing/Resource/Localized.bundle"
   end
 
