@@ -22,8 +22,10 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "8.0"
   s.requires_arc = true
 
+  s.default_subspec = 'Core'
+
   s.subspec 'Core' do |core|
-    core.source_files = "ZVRefreshing/Core/**/*.swift", "ZVRefreshing/State/**/*.swift", "ZVRefreshing/Support/**/*.swift", "ZVRefreshing/ZVRefreshing.h"
+    core.source_files = "ZVRefreshing/Core/**/*.swift", "ZVRefreshing/State/**/*.swift", "ZVRefreshing/ZVRefreshing.h"
     core.resources    = "ZVRefreshing/Resource/Localized.bundle"
   end
 

@@ -13,7 +13,7 @@ open class ZVRefreshBackStateFooter: ZVRefreshBackFooter {
     
     public var labelInsetLeft: CGFloat = 12.0
     public var stateTitles: [State : String]?
-    public private(set) var stateLabel: UILabel?
+    public var stateLabel: UILabel?
     
     // MARK: - Subviews
     
@@ -24,11 +24,11 @@ open class ZVRefreshBackStateFooter: ZVRefreshBackFooter {
             stateLabel = .default
             addSubview(stateLabel!)
         }
-        
-        setTitle(localized(string: LocalizedKey.Footer.Back.idle), for: .idle)
-        setTitle(localized(string: LocalizedKey.Footer.Back.pulling), for: .pulling)
-        setTitle(localized(string: LocalizedKey.Footer.Back.refreshing), for: .refreshing)
-        setTitle(localized(string: LocalizedKey.Footer.Back.noMoreData), for: .noMoreData)
+                
+        setTitle(localized(string: LocalizedKey.BackFooter.idle), for: .idle)
+        setTitle(localized(string: LocalizedKey.BackFooter.pulling), for: .pulling)
+        setTitle(localized(string: LocalizedKey.BackFooter.refreshing), for: .refreshing)
+        setTitle(localized(string: LocalizedKey.BackFooter.noMoreData), for: .noMoreData)
     }
     
     override open func placeSubViews() {
@@ -61,21 +61,5 @@ extension ZVRefreshBackStateFooter {
 
 // MARK: - ZVRefreshStateComponent
 
-extension ZVRefreshBackStateFooter {
-    
-    public func setCurrentStateTitle() {
-        guard let stateLabel = stateLabel else { return }
-        if stateLabel.isHidden && refreshState == .refreshing {
-            stateLabel.text = nil
-        } else {
-            stateLabel.text = stateTitles?[refreshState]
-        }
-    }
-
-    public func setTitle(_ title: String, for state: State) {
-        if stateTitles == nil { stateTitles = [:] }
-        stateTitles?[state] = title
-        stateLabel?.text = stateTitles?[refreshState]
-    }
-}
+extension ZVRefreshBackStateFooter: ZVRefreshStateComponent {}
 

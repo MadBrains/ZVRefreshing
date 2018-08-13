@@ -25,9 +25,9 @@ open class ZVRefreshAutoStateFooter : ZVRefreshAutoFooter {
             addSubview(stateLabel!)
         }
         
-        setTitle(localized(string: LocalizedKey.Footer.Auto.idle) , for: .idle)
-        setTitle(localized(string: LocalizedKey.Footer.Auto.refreshing), for: .refreshing)
-        setTitle(localized(string: LocalizedKey.Footer.Auto.noMoreData), for: .noMoreData)
+        setTitle(localized(string: LocalizedKey.AutoFooter.idle) , for: .idle)
+        setTitle(localized(string: LocalizedKey.AutoFooter.refreshing), for: .refreshing)
+        setTitle(localized(string: LocalizedKey.AutoFooter.noMoreData), for: .noMoreData)
         
         addTarget(self, action: #selector(stateLabelClicked), for: .touchUpInside)
     }
@@ -71,21 +71,5 @@ private extension ZVRefreshAutoStateFooter {
 
 // MARK: - ZVRefreshStateComponent
 
-extension ZVRefreshAutoStateFooter {
-    
-    public func setCurrentStateTitle() {
-        guard let stateLabel = stateLabel else { return }
-        if stateLabel.isHidden && refreshState == .refreshing {
-            stateLabel.text = nil
-        } else {
-            stateLabel.text = stateTitles?[refreshState]
-        }
-    }
-
-    public func setTitle(_ title: String, for state: State) {
-        if stateTitles == nil { stateTitles = [:] }
-        stateTitles?[state] = title
-        stateLabel?.text = stateTitles?[refreshState]
-    }
-}
+extension ZVRefreshAutoStateFooter: ZVRefreshStateComponent {}
 
