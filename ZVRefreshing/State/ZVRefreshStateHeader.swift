@@ -30,13 +30,13 @@ open class ZVRefreshStateHeader: ZVRefreshHeader {
     
     public var lastUpdatedTimeKey: String = LastUpdatedTimeKey.default {
         didSet {
-            _didSetLastUpdatedTimeKey(lastUpdatedTimeKey)
+            didSetLastUpdatedTimeKey(lastUpdatedTimeKey)
         }
     }
 
     public var lastUpdatedTimeLabelText:((_ date: Date?)->(String))? {
         didSet {
-            _didSetLastUpdatedTimeKey(lastUpdatedTimeKey)
+            didSetLastUpdatedTimeKey(lastUpdatedTimeKey)
         }
     }
     
@@ -113,7 +113,7 @@ open class ZVRefreshStateHeader: ZVRefreshHeader {
         UserDefaults.standard.set(Date(), forKey: lastUpdatedTimeKey)
         UserDefaults.standard.synchronize()
         
-        _didSetLastUpdatedTimeKey(lastUpdatedTimeKey)
+        didSetLastUpdatedTimeKey(lastUpdatedTimeKey)
     }
 }
 
@@ -133,7 +133,7 @@ extension ZVRefreshStateHeader {
 
 private extension ZVRefreshStateHeader {
     
-    func _didSetLastUpdatedTimeKey(_ newValue: String) {
+    func didSetLastUpdatedTimeKey(_ newValue: String) {
         
         if lastUpdatedTimeLabelText != nil {
             lastUpdatedTimeLabel?.text = lastUpdatedTimeLabelText?(lastUpdatedTime)
@@ -173,4 +173,20 @@ private extension ZVRefreshStateHeader {
 
 // MARK: - ZVRefreshStateComponent
 
-extension ZVRefreshStateHeader: ZVRefreshStateComponentConvertor {}
+extension ZVRefreshStateHeader {
+    
+    public func setCurrentStateTitle() {
+        guard let stateLabel = stateLabel else { return }
+        if stateLabel.isHidden && refreshState == .refreshing {
+            stateLabel.text = nil
+        } else {
+            stateLabel.text = stateTitles?[refreshState]
+        }
+    }
+
+    public func setTitle(_ title: String, for state: State) {
+        if stateTitles == nil { stateTitles = [:] }
+        stateTitles?[state] = title
+        stateLabel?.text = stateTitles?[refreshState]
+    }
+}

@@ -12,7 +12,7 @@ open class ZVRefreshAutoFooter: ZVRefreshFooter {
     // MARK: - Property
     
     public var isAutomaticallyRefresh: Bool = true
-    private var _triggerAutomaticallyRefreshPercent: CGFloat = 1.0
+    private var triggerAutomaticallyRefreshPercent: CGFloat = 1.0
     
     // MARK: - Do On State
     
@@ -37,7 +37,7 @@ open class ZVRefreshAutoFooter: ZVRefreshFooter {
         super.scrollView(scrollView, contentSizeDidChanged: value)
         
         if scrollView.contentInset.top + scrollView.contentSize.height > scrollView.frame.height {
-            if scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.height + frame.height * _triggerAutomaticallyRefreshPercent + scrollView.contentInset.bottom - frame.height) {
+            if scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.height + frame.height * triggerAutomaticallyRefreshPercent + scrollView.contentInset.bottom - frame.height) {
                 let old = (value?[.oldKey] as? NSValue)?.cgPointValue
                 let new = (value?[.newKey] as? NSValue)?.cgPointValue
                 if old != nil && new != nil && new!.y > old!.y {

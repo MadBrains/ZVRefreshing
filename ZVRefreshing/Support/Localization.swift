@@ -41,7 +41,7 @@ struct LocalizedKey {
 
 func localized(string key: String, comment: String = "") -> String {
     
-    guard let bundle = Bundle.current else { return "" }
+    guard let bundle = Bundle.localizedBundle else { return "" }
     
     var tableName = ""
     guard let language = Locale.preferredLanguages.first else { return "en"}

@@ -18,13 +18,30 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/zevwings/ZVRefreshing"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "zevwings" => "zev.wings@gmail.com" }
-  s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/zevwings/ZVRefreshing.git", :tag => "#{s.version}" }
-  s.source_files = "ZVRefreshing/**/*.swift", "ZVRefreshing/ZVRefreshing.h"
-  s.resources    = "ZVRefreshing/Resource/*"
-
+  s.platform     = :ios, "8.0"
   s.requires_arc = true
 
-  s.dependency 'ZVActivityIndicatorView'
+  s.subspec 'Core' do |core|
+    core.source_files = "ZVRefreshing/Base/**/*.swift", "ZVRefreshing/State/**/*.swift", "ZVRefreshing/Support/**/*.swift", "ZVRefreshing/ZVRefreshing.h"
+    core.resources    = "ZVRefreshing/Resource/Localized.bundle"
+  end
+
+  s.subspec 'Flat' do |flat| 
+    flat.source_files = "ZVRefreshing/Flat/**/*.swift"
+    flat.dependency 'ZVRefreshing/Core'
+    flat.dependency 'ZVActivityIndicatorView'
+  end
+
+  s.subspec 'Native' do |native|
+    native.source_files = "ZVRefreshing/Native/**/*.swift"
+    native.resources    = "ZVRefreshing/Resource/Image.bundle"
+    native.dependency 'ZVRefreshing/Core'
+  end
+
+  s.subspec 'Animation' do |animation|
+    animation.source_files = "ZVRefreshing/Animation/**/*.swift"
+    animation.dependency 'ZVRefreshing/Core'
+  end
 
 end

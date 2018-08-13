@@ -10,7 +10,7 @@ import UIKit
 
 public extension UIScrollView {
     
-    private struct _Storage {
+    private struct Storage {
         static var refreshHeader: ZVRefreshHeader?
         static var refreshFooter: ZVRefreshFooter?
         static var reloadHandler: ZVReloadDataHandler?
@@ -18,47 +18,39 @@ public extension UIScrollView {
 
     public var refreshHeader: ZVRefreshHeader? {
         get {
-            return _Storage.refreshHeader
+            return Storage.refreshHeader
         }
         set {
             guard refreshHeader != newValue else { return }
+            
             refreshHeader?.removeFromSuperview()
             willChangeValue(forKey: "refreshHeader")
-            _Storage.refreshHeader = newValue
+            Storage.refreshHeader = newValue
             didChangeValue(forKey: "refreshHeader")
             
-            guard let _refreshHeader = refreshHeader else { return }
-            insertSubview(_refreshHeader, at: 0)
+            guard let refreshHeader = refreshHeader else { return }
+            insertSubview(refreshHeader, at: 0)
         }
     }
 
     public var refreshFooter: ZVRefreshFooter? {
         get {
-            return _Storage.refreshFooter
+            return Storage.refreshFooter
         }
         set {
             guard refreshFooter != newValue else { return }
+            
             refreshFooter?.removeFromSuperview()
-
             willChangeValue(forKey: "refreshFooter")
-            _Storage.refreshFooter = newValue
+            Storage.refreshFooter = newValue
             didChangeValue(forKey: "refreshFooter")
 
-            guard let _refreshFooter = refreshFooter else { return }
-            insertSubview(_refreshFooter, at: 0)
+            guard let refreshFooter = refreshFooter else { return }
+            insertSubview(refreshFooter, at: 0)
         }
     }
     
-    internal var reloadDataHandler: ZVReloadDataHandler? {
-        get {
-            return _Storage.reloadHandler
-        }
-        set {
-            _Storage.reloadHandler = newValue
-        }
-    }
-    
-    internal var totalDataCount: Int {
+    public var totalDataCount: Int {
         
         var totalCount: Int = 0
         if isKind(of: UITableView.classForCoder()) {
@@ -75,6 +67,15 @@ public extension UIScrollView {
             }
         }
         return totalCount
+    }
+    
+    internal var reloadDataHandler: ZVReloadDataHandler? {
+        get {
+            return Storage.reloadHandler
+        }
+        set {
+            Storage.reloadHandler = newValue
+        }
     }
     
     internal func executeReloadDataBlock() {
@@ -98,11 +99,11 @@ extension UITableView {
     
     fileprivate static let once: Void = {
         UITableView.exchangeInstanceMethod(m1: #selector(UITableView.reloadData),
-                                           m2: #selector(UITableView._reloadData))
+                                           m2: #selector(UITableView.internal_reloadData))
     }()
     
-    @objc private func _reloadData() {
-        _reloadData()
+    @objc private func internal_reloadData() {
+        internal_reloadData()
         executeReloadDataBlock()
     }
 }
@@ -111,11 +112,11 @@ extension UICollectionView {
     
     fileprivate static let once: Void = {
         UICollectionView.exchangeInstanceMethod(m1: #selector(UICollectionView.reloadData),
-                                                m2: #selector(UICollectionView._reloadData))
+                                                m2: #selector(UICollectionView.internal_reloadData))
     }()
     
-    @objc private func _reloadData() {
-        _reloadData()
+    @objc private func internal_reloadData() {
+        internal_reloadData()
         executeReloadDataBlock()
     }
 }

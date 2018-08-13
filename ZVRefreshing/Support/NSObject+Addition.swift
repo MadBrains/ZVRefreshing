@@ -10,7 +10,7 @@ import Foundation
 
 extension NSObject {
     
-    class func exchangeInstanceMethod(m1: Selector, m2: Selector) {
+    internal class func exchangeInstanceMethod(m1: Selector, m2: Selector) {
         
         let method1 = class_getInstanceMethod(self, m1)
         let method2 = class_getInstanceMethod(self, m2)

@@ -25,9 +25,9 @@ open class ZVRefreshBackFooter: ZVRefreshFooter {
         scrollViewOriginalInset = scrollView.contentInset
         let currentOffsetY = scrollView.contentOffset.y
         
-        guard currentOffsetY > _happenOffsetY else { return }
+        guard currentOffsetY > happenOffsetY else { return }
         
-        let pullingPercent = (currentOffsetY - _happenOffsetY) / frame.height
+        let pullingPercent = (currentOffsetY - happenOffsetY) / frame.height
         
         if refreshState == .noMoreData {
             self.pullingPercent = pullingPercent
@@ -36,7 +36,7 @@ open class ZVRefreshBackFooter: ZVRefreshFooter {
         
         if scrollView.isDragging {
             self.pullingPercent = pullingPercent
-            let normal2pullingOffsetY = _happenOffsetY + frame.height
+            let normal2pullingOffsetY = happenOffsetY + frame.height
             if refreshState == .idle && currentOffsetY > normal2pullingOffsetY {
                 refreshState = .pulling
             } else if refreshState == .pulling && currentOffsetY <= normal2pullingOffsetY {
@@ -63,13 +63,13 @@ open class ZVRefreshBackFooter: ZVRefreshFooter {
     override open func doOnIdle(with oldState: State) {
         super.doOnIdle(with: oldState)
         
-        _doOn(idleOrNoMoreData: .idle, with: oldState)
+        doOnIdleOrNoMoreData(.idle, with: oldState)
     }
     
     override open func doOnNoMoreData(with oldState: State) {
         super.doOnNoMoreData(with: oldState)
         
-        _doOn(idleOrNoMoreData: .noMoreData, with: oldState)
+        doOnIdleOrNoMoreData(.noMoreData, with: oldState)
     }
 
     override open func doOnRefreshing(with oldState: State) {
@@ -80,18 +80,18 @@ open class ZVRefreshBackFooter: ZVRefreshFooter {
         lastRefreshCount = scrollView.totalDataCount
         UIView.animate(withDuration: AnimationDuration.fast, animations: {
             var bottom = self.frame.height + self.scrollViewOriginalInset.bottom
-            if self._heightForContentBreakView < 0 {
-                bottom -= self._heightForContentBreakView
+            if self.heightForContentBreakView < 0 {
+                bottom -= self.heightForContentBreakView
             }
             self.lastBottomDelta = bottom - scrollView.contentInset.bottom
             scrollView.contentInset.bottom = bottom
-            scrollView.contentOffset.y = self._happenOffsetY + self.frame.height
+            scrollView.contentOffset.y = self.happenOffsetY + self.frame.height
         }, completion: { _ in
             self.executeRefreshCallback()
         })
     }
     
-    private func _doOn(idleOrNoMoreData state: State, with oldState: State) {
+    private func doOnIdleOrNoMoreData(_ state: State, with oldState: State) {
         
         guard let scrollView = scrollView else { return }
         
@@ -104,7 +104,7 @@ open class ZVRefreshBackFooter: ZVRefreshFooter {
             })
         }
         if .refreshing == oldState &&
-            _heightForContentBreakView > CGFloat(0.0) &&
+            heightForContentBreakView > CGFloat(0.0) &&
             scrollView.totalDataCount != lastRefreshCount {
             scrollView.contentOffset.y = scrollView.contentOffset.y
         }
@@ -115,7 +115,7 @@ open class ZVRefreshBackFooter: ZVRefreshFooter {
 
 private extension ZVRefreshBackFooter {
     
-    private var _heightForContentBreakView: CGFloat {
+    private var heightForContentBreakView: CGFloat {
         
         guard let scrollView = scrollView else { return 0.0 }
         
@@ -124,9 +124,9 @@ private extension ZVRefreshBackFooter {
         return height
     }
     
-    private var _happenOffsetY: CGFloat {
+    private var happenOffsetY: CGFloat {
         
-        let deletaH = _heightForContentBreakView
+        let deletaH = heightForContentBreakView
         if deletaH > 0 {
             return deletaH - scrollViewOriginalInset.top
         } else {

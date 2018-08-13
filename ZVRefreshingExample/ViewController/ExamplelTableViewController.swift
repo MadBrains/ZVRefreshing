@@ -33,6 +33,7 @@ class ExamplelTableViewController: UIViewController {
     private var nativeAutoFooter: ZVRefreshAutoNativeFooter?
     
     deinit {
+        print("ExamplelTableViewController deinit")
     }
     
     override func viewDidLoad() {

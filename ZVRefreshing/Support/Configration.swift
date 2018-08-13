@@ -30,11 +30,10 @@ struct ActivityIndicator {
 }
 
 extension Bundle {
-    static var current: Bundle? {
+    
+    static var localizedBundle: Bundle? {
         let bundle = Bundle(for: ZVRefreshComponent.self)
-        guard let path = bundle.path(forResource: "Resource", ofType: "bundle") else {
-            return nil
-        }
+        guard let path = bundle.path(forResource: "Localized", ofType: "bundle") else { return nil }
         return Bundle(path: path)
     }
 }
@@ -42,10 +41,11 @@ extension Bundle {
 extension UIImage {
     
     static var arrow: UIImage? {
-        guard let path = Bundle.current?.path(forResource: "arrow@3x", ofType: "png") else {
-            return nil
-        }
-        let image = UIImage(contentsOfFile: path)?.withRenderingMode(.alwaysTemplate)
+        
+        let bundle = Bundle(for: ZVRefreshComponent.self)
+        guard let path = bundle.path(forResource: "Image", ofType: "bundle") else { return nil }
+        guard let filePath = Bundle(path: path)?.path(forResource: "arrow@3x", ofType: "png") else { return nil }
+        let image = UIImage(contentsOfFile: filePath)?.withRenderingMode(.alwaysTemplate)
         return image
     }
 }

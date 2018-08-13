@@ -21,8 +21,8 @@ open class ZVRefreshComponent: UIControl {
     
     public private(set) var isRefreshing: Bool = false
 
-    private weak var _target: NSObject?
-    private var _action: Selector?
+    private weak var target: NSObject?
+    private var action: Selector?
     
     private(set) var scrollView: UIScrollView?
     var scrollViewOriginalInset: UIEdgeInsets = UIEdgeInsets.zero
@@ -31,13 +31,14 @@ open class ZVRefreshComponent: UIControl {
     
     public var refreshHandler: ZVRefreshHandler?
     
-    private var _refreshState: State = .idle
+    private var private_refreshState: State = .idle
     open var refreshState: State {
         get {
-            return _refreshState
+            return private_refreshState
         }
         set {
             let oldState = refreshState
+            
             guard oldState != newValue else { return }
             
             willChangeValue(forKey: "isRefreshing")
@@ -45,7 +46,7 @@ open class ZVRefreshComponent: UIControl {
             didChangeValue(forKey: "isRefreshing")
             
             willChangeValue(forKey: "refreshState")
-            _refreshState = newValue
+            private_refreshState = newValue
             didChangeValue(forKey: "refreshState")
             
             sendActions(for: .valueChanged)
@@ -95,7 +96,7 @@ open class ZVRefreshComponent: UIControl {
     // MARK: - Init
     
     deinit {
-        _removeObservers()
+        removeObservers()
     }
     
     /// Init
@@ -120,8 +121,8 @@ open class ZVRefreshComponent: UIControl {
         self.init()
         
         guard let target = target as? NSObject else { return }
-        _target = target
-        _action = action
+        self.target = target
+        self.action = action
     }
     
     override public init(frame: CGRect) {
@@ -186,7 +187,7 @@ extension ZVRefreshComponent {
         
         guard let superview = newSuperview as? UIScrollView else { return }
         
-        _removeObservers()
+        removeObservers()
         
         frame.origin.x = 0
         frame.size.width = superview.frame.width
@@ -196,7 +197,7 @@ extension ZVRefreshComponent {
         scrollView?.alwaysBounceVertical = true
         scrollViewOriginalInset = superview.contentInset
         
-        _addObservers()
+        addObservers()
     }
 }
 
@@ -238,7 +239,7 @@ extension ZVRefreshComponent {
         static let panState      = "state"
     }
 
-    private func _addObservers() {
+    private func addObservers() {
         
         let options: NSKeyValueObservingOptions = [.new, .old]
         
@@ -247,7 +248,7 @@ extension ZVRefreshComponent {
         scrollView?.addObserver(self, forKeyPath: ObserversKeyPath.contentSize, options: options, context: nil)
     }
     
-    private func _removeObservers() {
+    private func removeObservers() {
         
         scrollView?.removeObserver(self, forKeyPath: ObserversKeyPath.contentOffset)
         scrollView?.removeObserver(self, forKeyPath: ObserversKeyPath.contentSize)
@@ -283,8 +284,8 @@ public extension ZVRefreshComponent {
     
     func addTarget(_ target: Any, action: Selector) {
         guard let target = target as? NSObject else { return }
-        _target = target
-        _action = action
+        self.target = target
+        self.action = action
     }
 }
 
@@ -296,7 +297,7 @@ extension ZVRefreshComponent {
         
         DispatchQueue.main.async {
             self.refreshHandler?()
-            if let target = self._target, let action = self._action, target.responds(to: action) {
+            if let target = self.target, let action = self.action, target.responds(to: action) {
                 target.perform(action, with: self)
             }
         }

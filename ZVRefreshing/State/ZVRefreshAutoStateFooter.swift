@@ -71,5 +71,21 @@ private extension ZVRefreshAutoStateFooter {
 
 // MARK: - ZVRefreshStateComponent
 
-extension ZVRefreshAutoStateFooter : ZVRefreshStateComponentConvertor {}
+extension ZVRefreshAutoStateFooter {
+    
+    public func setCurrentStateTitle() {
+        guard let stateLabel = stateLabel else { return }
+        if stateLabel.isHidden && refreshState == .refreshing {
+            stateLabel.text = nil
+        } else {
+            stateLabel.text = stateTitles?[refreshState]
+        }
+    }
+
+    public func setTitle(_ title: String, for state: State) {
+        if stateTitles == nil { stateTitles = [:] }
+        stateTitles?[state] = title
+        stateLabel?.text = stateTitles?[refreshState]
+    }
+}
 

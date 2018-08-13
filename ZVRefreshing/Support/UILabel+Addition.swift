@@ -10,7 +10,7 @@ import Foundation
 
 extension UILabel {
     
-    class var `default`: UILabel {
+    internal class var `default`: UILabel {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 14.0)
         label.textColor = .lightGray
@@ -20,7 +20,7 @@ extension UILabel {
         return label
     }
     
-    var textWidth: CGFloat {
+    internal var textWidth: CGFloat {
         
         let size = CGSize(width: Int.max, height: Int.max)
         guard let text = self.text else { return 0 }
