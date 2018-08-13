@@ -74,5 +74,5 @@ open class ZVRefreshAnimationHeader: ZVRefreshStateHeader {
 
 // MARK: - ZVRefreshAnimationComponent
 
-extension ZVRefreshAnimationHeader: ZVRefreshAnimationComponent { }
+extension ZVRefreshAnimationHeader: ZVRefreshAnimationComponent {}
 

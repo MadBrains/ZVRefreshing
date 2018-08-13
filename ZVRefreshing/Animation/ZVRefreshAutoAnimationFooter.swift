@@ -67,5 +67,5 @@ open class ZVRefreshAutoAnimationFooter: ZVRefreshAutoStateFooter {
 
 // MARK: - ZVRefreshAnimationComponent
 
-extension ZVRefreshAutoAnimationFooter: ZVRefreshAnimationComponent { }
+extension ZVRefreshAutoAnimationFooter: ZVRefreshAnimationComponent {}
 

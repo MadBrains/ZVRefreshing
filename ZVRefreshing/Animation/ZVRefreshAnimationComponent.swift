@@ -8,14 +8,12 @@
 
 import Foundation
 
-// MARK: - Public
-
 public protocol ZVRefreshAnimationComponent: AnyObject {
     
+    var animationView: UIImageView? { get }
+
     var stateImages: [ZVRefreshComponent.State: [UIImage]]? { get set }
     var stateDurations: [ZVRefreshComponent.State: TimeInterval]? { get set }
-    
-    var animationView: UIImageView? { get }
 }
 
 public extension ZVRefreshAnimationComponent where Self: ZVRefreshComponent{
